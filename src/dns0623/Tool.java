@@ -12,7 +12,6 @@ public class Tool {
 	
 	public Tool(String toolCode, String toolType, String brand, double dailyCharge, boolean weakDay, boolean weakend,
 			boolean holiday) {
-		super();
 		ToolCode = toolCode;
 		ToolType = toolType;
 		Brand = brand;
