@@ -1,7 +1,6 @@
 package dns0623;
 
 import java.util.Date;
-import java.io.*;
 
 public class RentalAgreement {
 	
@@ -11,23 +10,32 @@ public class RentalAgreement {
 	private int RentalDays;
 	private Date RentalDate;
 	private int ChargeDays;
+	private Date DueDate;
+	private double DailyCharge;
 	private double PreDiscount;
 	private int Discount;
 	private double DiscountAmount;
 	private double FinalCharge;
 	
+
+	
 	public RentalAgreement(String toolCode, String toolType, String brand, int rentalDays, Date rentalDate,
-			int chargeDays, double preDiscount, int discount, double discountAmount, double finalCharge) {
+			int chargeDays, Date dueDate, double dailyCharge, double preDiscount, int discount, double discountAmount,
+			double finalCharge) {
 		ToolCode = toolCode;
 		ToolType = toolType;
 		Brand = brand;
 		RentalDays = rentalDays;
 		RentalDate = rentalDate;
 		ChargeDays = chargeDays;
-		PreDiscount = preDiscount;
+		DueDate = dueDate;//Find your due date value here using the rental date and adding the chargeDays too it.
+		DailyCharge = dailyCharge;
+		PreDiscount = preDiscount;//Find the prediscount charge
 		Discount = discount;
-		DiscountAmount = discountAmount;
-		FinalCharge = finalCharge;
+		DiscountAmount = discountAmount;//find how much money they're saving
+		FinalCharge = finalCharge;//find final charge
+		
+		//use calender instance to find weekdays and holidays
 	}
 	
 	public String getToolCode() {
@@ -104,19 +112,20 @@ public class RentalAgreement {
 		System.out.print("Check out Date: ");
 		System.out.println(RentalDate);
 		System.out.print("Due Date: ");
+		System.out.println(DueDate);
+		System.out.print("Daily Rental Charge: $");
 		System.out.println(ToolCode);
-		System.out.print("Tool code: ");
-		System.out.println(ToolCode);
-		System.out.print("Tool code: ");
-		System.out.println(ToolCode);
-		System.out.print("Tool code: ");
-		System.out.println(ToolCode);
-		System.out.print("Tool code: ");
-		System.out.println(ToolCode);
-		System.out.print("Tool code: ");
-		System.out.println(ToolCode);
-		System.out.print("Tool code: ");
-		System.out.println(ToolCode);
+		System.out.print("Charge Days: ");
+		System.out.println(DailyCharge);
+		System.out.print("Pre-discount Charge: $");
+		System.out.println(PreDiscount);
+		System.out.print("Discount Percent: ");
+		System.out.print(Discount);
+		System.out.println("%");
+		System.out.print("Discount Amount: $");
+		System.out.println(DiscountAmount);
+		System.out.print("Final Charge: $");
+		System.out.println(FinalCharge);
 	}
 	
 }
