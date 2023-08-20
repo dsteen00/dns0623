@@ -1,17 +1,15 @@
 package dns0623;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class RentalAgreement {
 	
-	private String ToolCode;
-	private String ToolType;
-	private String Brand;
+	private Tool rentalTool;
 	private int RentalDays;
 	private Date RentalDate;
 	private int ChargeDays;
 	private Date DueDate;
-	private double DailyCharge;
 	private double PreDiscount;
 	private int Discount;
 	private double DiscountAmount;
@@ -19,113 +17,113 @@ public class RentalAgreement {
 	
 
 	
-	public RentalAgreement(String toolCode, String toolType, String brand, int rentalDays, Date rentalDate,
-			int chargeDays, Date dueDate, double dailyCharge, double preDiscount, int discount, double discountAmount,
-			double finalCharge) {
-		ToolCode = toolCode;
-		ToolType = toolType;
-		Brand = brand;
+	public RentalAgreement(Tool rTool, int rentalDays, Date rentalDate,
+			int discount) {
+		rentalTool = rTool;
+		//ToolCode = toolCode;
+		//ToolType = toolType;
+		//Brand = brand;
 		RentalDays = rentalDays;
 		RentalDate = rentalDate;
-		ChargeDays = chargeDays;
-		DueDate = dueDate;//Find your due date value here using the rental date and adding the chargeDays too it.
-		DailyCharge = dailyCharge;
-		PreDiscount = preDiscount;//Find the prediscount charge
+		ChargeDays = findChargeDays(rentalDays,rentalDate,rTool.isWeakend(), rTool.isHoliday());
+		DueDate = findDueDate( rentalDays, rentalDate);//dueDate;//Find your due date value here using the rental date and adding the chargeDays too it.
+		//DailyCharge = dailyCharge;
+		PreDiscount = findPreDiscount(rTool.getDailyCharge(),ChargeDays);//Find the prediscount charge
 		Discount = discount;
-		DiscountAmount = discountAmount;//find how much money they're saving
-		FinalCharge = finalCharge;//find final charge
+		DiscountAmount = findDiscountAmount(PreDiscount, discount);//find how much money they're saving
+		FinalCharge = findFinalCharge(PreDiscount, DiscountAmount);//find final charge
 		
 		//use calender instance to find weekdays and holidays
 	}
 	
-	public String getToolCode() {
-		return ToolCode;
+	public int findChargeDays(int days, Date Rdate, boolean weekends, boolean holidays) {
+		Calendar C = Calendar.getInstance();
+		C.setTime(Rdate);
+		
+		Calendar TheForth = Calendar.getInstance();
+		
+		TheForth.set(Calendar.YEAR, C.get(Calendar.YEAR));
+		
+		TheForth.set(Calendar.DAY_OF_MONTH, 4);
+		
+		TheForth.set(Calendar.MONTH, Calendar.JULY);
+		
+		if(TheForth.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			TheForth.add(Calendar.DATE, -1);
+		}
+		
+		if(TheForth.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			TheForth.add(Calendar.DATE, 1);
+		}
+		
+		int fdays = 0;
+		int i = 0;
+		while(i<days) {
+			C.add(Calendar.DATE, i);
+			int dayOfTheWeek = C.get(Calendar.DAY_OF_WEEK);
+			if(weekends == true) {
+				if(dayOfTheWeek == Calendar.SUNDAY || dayOfTheWeek == Calendar.SATURDAY) {
+					fdays++;
+				}
+			}
+			if(holidays == true) {
+				if(TheForth.getTime() == C.getTime()) {
+					fdays++;
+				}
+				if(C.get(Calendar.DAY_OF_MONTH) == Calendar.SEPTEMBER && C.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY && C.get(Calendar.DAY_OF_MONTH) < 8) {
+					fdays++;
+				}
+			}
+			i++;
+		}
+		return days - fdays;
 	}
-	public void setToolCode(String toolCode) {
-		ToolCode = toolCode;
+	
+	public Date findDueDate(int days, Date Rdate) {
+		Calendar C = Calendar.getInstance();
+		C.setTime(Rdate);
+		C.add(Calendar.DATE,days);
+		return C.getTime();
 	}
-	public String getToolType() {
-		return ToolType;
+	
+	public double findPreDiscount(double dcharge, int Charday) {
+		return dcharge*Charday;
 	}
-	public void setToolType(String toolType) {
-		ToolType = toolType;
+	
+	public double findDiscountAmount(double PreChar, int Percent) {
+		return PreChar*Percent*.01;
 	}
-	public String getBrand() {
-		return Brand;
-	}
-	public void setBrand(String brand) {
-		Brand = brand;
-	}
-	public int getRentalDays() {
-		return RentalDays;
-	}
-	public void setRentalDays(int rentalDays) {
-		RentalDays = rentalDays;
-	}
-	public Date getRentalDate() {
-		return RentalDate;
-	}
-	public void setRentalDate(Date rentalDate) {
-		RentalDate = rentalDate;
-	}
-	public int getChargeDays() {
-		return ChargeDays;
-	}
-	public void setChargeDays(int chargeDays) {
-		ChargeDays = chargeDays;
-	}
-	public double getPreDiscount() {
-		return PreDiscount;
-	}
-	public void setPreDiscount(double preDiscount) {
-		PreDiscount = preDiscount;
-	}
-	public int getDiscount() {
-		return Discount;
-	}
-	public void setDiscount(int discount) {
-		Discount = discount;
-	}
-	public double getDiscountAmount() {
-		return DiscountAmount;
-	}
-	public void setDiscountAmount(double discountAmount) {
-		DiscountAmount = discountAmount;
-	}
-	public double getFinalCharge() {
-		return FinalCharge;
-	}
-	public void setFinalCharge(double finalCharge) {
-		FinalCharge = finalCharge;
+	
+	public double findFinalCharge(double PreChar, double disAmount) {
+		return PreChar - disAmount;
 	}
 	
 	public void printRentalAgreement() {
+		
+		Calendar C = Calendar.getInstance();
+		
 		System.out.println("Rental Agreement");
 		System.out.print("Tool code: ");
-		System.out.println(ToolCode);
+		System.out.println(rentalTool.getToolCode());
 		System.out.print("Tool type: ");
-		System.out.println(ToolType);
+		System.out.println(rentalTool.getToolType());
 		System.out.print("Brand: ");
-		System.out.println(Brand);
+		System.out.println(rentalTool.getBrand());
 		System.out.print("Rental Days: ");
 		System.out.println(RentalDays);
-		System.out.print("Check out Date: ");
-		System.out.println(RentalDate);
-		System.out.print("Due Date: ");
-		System.out.println(DueDate);
-		System.out.print("Daily Rental Charge: $");
-		System.out.println(ToolCode);
+		C.setTime(RentalDate);
+		System.out.printf("Check out Date: %d/%d/%d%n", C.get(Calendar.MONTH),C.get(Calendar.DAY_OF_MONTH),C.get(Calendar.YEAR));
+		C.setTime(DueDate);
+		System.out.printf("Due Date: %d/%d/%d%n", C.get(Calendar.MONTH),C.get(Calendar.DAY_OF_MONTH),C.get(Calendar.YEAR));
+		System.out.printf("Daily Rental Charge: $%4.2f%n", rentalTool.getDailyCharge());
 		System.out.print("Charge Days: ");
-		System.out.println(DailyCharge);
-		System.out.print("Pre-discount Charge: $");
-		System.out.println(PreDiscount);
+		System.out.println(ChargeDays);
+		System.out.printf("Pre-discount Charge: $%4.2f%n", PreDiscount);
 		System.out.print("Discount Percent: ");
 		System.out.print(Discount);
 		System.out.println("%");
-		System.out.print("Discount Amount: $");
-		System.out.println(DiscountAmount);
-		System.out.print("Final Charge: $");
-		System.out.println(FinalCharge);
+		System.out.printf("Discount Amount: $%4.2f%n", DiscountAmount);
+		System.out.printf("Final Charge: $%4.2f%n", FinalCharge);
 	}
 	
 }

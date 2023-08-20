@@ -63,8 +63,4 @@ public class Tool {
 	public void setHoliday(boolean holiday) {
 		Holiday = holiday;
 	}
-	
-	
-
-
 }
