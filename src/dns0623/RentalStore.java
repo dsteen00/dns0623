@@ -31,5 +31,9 @@ public class RentalStore {
 		return ReturnTool;
 		
 	}
-	
+
+	public List<String> getCodeList() {
+		return CodeList;
+	}
+
 }
