@@ -36,7 +36,7 @@ public class RentalAgreement {
 		//use calender instance to find weekdays and holidays
 	}
 	
-	public int findChargeDays(int days, Date Rdate, boolean weekends, boolean holidays) {
+	private int findChargeDays(int days, Date Rdate, boolean weekends, boolean holidays) {
 		Calendar C = Calendar.getInstance();
 		C.setTime(Rdate);
 		
@@ -79,22 +79,22 @@ public class RentalAgreement {
 		return days - fdays;
 	}
 	
-	public Date findDueDate(int days, Date Rdate) {
+	private Date findDueDate(int days, Date Rdate) {
 		Calendar C = Calendar.getInstance();
 		C.setTime(Rdate);
 		C.add(Calendar.DATE,days);
 		return C.getTime();
 	}
 	
-	public double findPreDiscount(double dcharge, int Charday) {
+	private double findPreDiscount(double dcharge, int Charday) {
 		return dcharge*Charday;
 	}
 	
-	public double findDiscountAmount(double PreChar, int Percent) {
+	private double findDiscountAmount(double PreChar, int Percent) {
 		return PreChar*Percent*.01;
 	}
 	
-	public double findFinalCharge(double PreChar, double disAmount) {
+	private double findFinalCharge(double PreChar, double disAmount) {
 		return PreChar - disAmount;
 	}
 	
@@ -112,9 +112,9 @@ public class RentalAgreement {
 		System.out.print("Rental Days: ");
 		System.out.println(RentalDays);
 		C.setTime(RentalDate);
-		System.out.printf("Check out Date: %d/%d/%d%n", C.get(Calendar.MONTH),C.get(Calendar.DAY_OF_MONTH),C.get(Calendar.YEAR));
+		System.out.printf("Check out Date: %d/%d/%d%n", C.get(Calendar.MONTH)+1,C.get(Calendar.DAY_OF_MONTH),C.get(Calendar.YEAR)-2000);
 		C.setTime(DueDate);
-		System.out.printf("Due Date: %d/%d/%d%n", C.get(Calendar.MONTH),C.get(Calendar.DAY_OF_MONTH),C.get(Calendar.YEAR));
+		System.out.printf("Due Date: %d/%d/%d%n", C.get(Calendar.MONTH)+1,C.get(Calendar.DAY_OF_MONTH),C.get(Calendar.YEAR)-2000);
 		System.out.printf("Daily Rental Charge: $%4.2f%n", rentalTool.getDailyCharge());
 		System.out.print("Charge Days: ");
 		System.out.println(ChargeDays);

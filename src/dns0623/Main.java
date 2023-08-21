@@ -16,29 +16,32 @@ public class Main {
 		int RentMonth = 0;
 		int RentYear = 0;
 		int DaysRented = 0;
+		int j = 0;
+		while(j == 0) {
+			try {
+				System.out.println("Derrick's Tool Rental");
+				System.out.print("Enter Tool Code:");
+				Tcode = getToolCode(DerrickStore, UserInput);
+				System.out.printf("You have requested %s%n", Tcode);
+				System.out.println("Enter Year for Rental YYYY:");
+				RentYear = getRentalYear(UserInput);
+				System.out.println("Enter Month for Rental MM:");
+				RentMonth = getRentalMonth(UserInput);
+				System.out.println("Enter Date for Rental DD:");
+				RentDay = getRentalDate(RentMonth, UserInput);
+				System.out.println("Number of days renting:");
+				DaysRented = getRentalDays(UserInput);
+				System.out.println("Discount 0%-100%:");
+				discount = getDiscount(UserInput);
+				RentalDate.set(RentYear, RentMonth, RentDay);
+				RentalAgreement Rental = new RentalAgreement(DerrickStore.returnTool(Tcode),DaysRented,RentalDate.getTime(),discount);
+				Rental.printRentalAgreement();
+				j++;
+			}
 		
-		try {
-			System.out.println("Derrick's Tool Rental");
-			System.out.print("Enter Tool Code:");
-			Tcode = getToolCode(DerrickStore, UserInput);
-			System.out.printf("You have requested %s%n", Tcode);
-			System.out.println("Enter Year for Rental YYYY:");
-			RentYear = getRentalYear(UserInput);
-			System.out.println("Enter Month for Rental MM:");
-			RentMonth = getRentalMonth(UserInput);
-			System.out.println("Enter Date for Rental DD:");
-			RentDay = getRentalDate(RentMonth, UserInput);
-			System.out.println("Number of days renting:");
-			DaysRented = getRentalDays(UserInput);
-			System.out.println("Discount 0%-100%:");
-			discount = getDiscount(UserInput);
-			RentalDate.set(RentYear, RentMonth, RentDay);
-			RentalAgreement Rental = new RentalAgreement(DerrickStore.returnTool(Tcode),DaysRented,RentalDate.getTime(),discount);
-			Rental.printRentalAgreement();
-		}
-		
-		catch(IllegalArgumentException ex) {
-			System.out.println(ex.getMessage());
+			catch(IllegalArgumentException ex) {
+				System.out.println(ex.getMessage());
+			}
 		}
 		UserInput.close();
 			
@@ -71,15 +74,15 @@ public class Main {
 	
 	public static int getRentalMonth(Scanner UI) {
 		int i = UI.nextInt();
-		if (i<0 || i >12) {
+		if (i<1 || i >13) {
 			throw new IllegalArgumentException("Please Enter a valid month");
 		}
-		return i;
+		return i-1;
 	}
 	
 	public static int getRentalYear(Scanner UI) {
 		int i = UI.nextInt();
-		if (i<1000 || i > 9999) {
+		if (i<2000 || i > 2999) {
 			throw new IllegalArgumentException("Please Enter a valid year");
 		}
 		return i;
@@ -87,7 +90,7 @@ public class Main {
 	
 	public static int getRentalDays(Scanner UI) {
 		int i = UI.nextInt();
-		if (i<0) {
+		if (i<=0) {
 			throw new IllegalArgumentException("Please Enter a number greater than 0");
 		}
 		return i;
