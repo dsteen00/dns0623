@@ -36,9 +36,8 @@ public class RentalStore {
 	
 	
 	//RentalStore DerrickStore = new RentalStore();
-	public void runStore() {
-		int j = 0;
-		while(j == 0) {
+	public boolean runStore() {
+		
 			try {
 				System.out.println("Derrick's Tool Rental");
 				System.out.print("Enter Tool Code:");
@@ -57,14 +56,16 @@ public class RentalStore {
 				RentalDate.set(RentYear, RentMonth, RentDay);
 				RentalAgreement Rental = new RentalAgreement(returnTool(Tcode),DaysRented,RentalDate.getTime(),discount);
 				Rental.printRentalAgreement();
-				j++;
+				UserInput.close();
+				return true;
 			}
 	
 			catch(IllegalArgumentException ex) {
 				System.out.println(ex.getMessage());
+				UserInput.close();
+				return false;
 			}
-		}
-		UserInput.close();
+		
 	}
 	
 	public static String getToolCode(List<String> TL, Scanner UI) {
